@@ -4,6 +4,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
+import org.originmc.googleauthenticator.listeners.PlayerListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class GoogleAuthenticatorPlugin extends Plugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        getProxy().getPluginManager().registerListener(this, new PlayerListener(this));
         try { // Try to initialize HikariCP
             hikariController = new HikariStatementController(this);
         } catch (SQLException e) {
