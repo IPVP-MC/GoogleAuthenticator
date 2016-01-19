@@ -1,0 +1,5 @@
+name: ${project.name}
+main: org.originmc.googleauthenticator.GoogleAuthenticatorPlugin
+version: ${project.version}
+description: ${project.description}
+authors: [ SainttX ]
