@@ -1,0 +1,11 @@
+# MySQL database definition
+# NOTE: The database must already be created for the plugin to work.
+#       The plugin will NOT create the db for you. Only the creation
+#       of tables within the db is managed.
+mysql:
+  host: "localhost"
+  port: 3306
+  username: "root"
+  password: ""
+  db: "minecraft"
+
