@@ -61,6 +61,7 @@ public class HikariStatementController {
                     "`UUID` VARCHAR(40) NOT NULL," + // The UUID of the user
                     "`SECRET` int(36)," + // The users secret code
                     "`IP` VARCHAR(15) NOT NULL," + // The IP column represents the last authenticated IP for the user
+                    "`TRUST_IP` BIT(1) NOT NULL," + // Whether or not the player has their IP saved as a trusted IP
                     "PRIMARY KEY (`UUID`))");
             statement.executeUpdate();
             statement.close();

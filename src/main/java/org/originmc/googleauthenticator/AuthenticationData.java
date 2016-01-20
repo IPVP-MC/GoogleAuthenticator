@@ -10,6 +10,7 @@ public final class AuthenticationData {
 
     private final String secret;
     private final String ip;
+    private AtomicBoolean ipTrusted;
     private AtomicBoolean authenticated = new AtomicBoolean(false);
 
     /**
@@ -19,9 +20,20 @@ public final class AuthenticationData {
      * @param ip     the last authenticated IP address of the player
      */
     public AuthenticationData(String secret, String ip) {
-        // TODO: Not-null checks (?)
+        this(secret, ip, false);
+    }
+
+    /**
+     * Creates a data object holding a players Google Authenticator secret code and last authenticated IP address
+     *
+     * @param secret  the secret code for the player
+     * @param ip      the last authenticated IP address of the player
+     * @param ipTrust whether or not the players IP address should be trusted
+     */
+    public AuthenticationData(String secret, String ip, boolean ipTrust) {
         this.secret = secret;
         this.ip = ip;
+        this.ipTrusted = new AtomicBoolean(ipTrust);
     }
 
     /**
@@ -40,6 +52,24 @@ public final class AuthenticationData {
      */
     public String getIp() {
         return ip;
+    }
+
+    /**
+     * Returns whether or not the {@link net.md_5.bungee.api.connection.ProxiedPlayer} trusts the IP
+     *
+     * @return true if the player trusts the IP
+     */
+    public boolean isIpTrusted() {
+        return ipTrusted.get();
+    }
+
+    /**
+     * Sets whether or not the IP of the {@link net.md_5.bungee.api.connection.ProxiedPlayer} should be trusted
+     *
+     * @param ipTrusted the IP of the player
+     */
+    public void setIpTrusted(boolean ipTrusted) {
+        this.ipTrusted.set(ipTrusted);
     }
 
     /**
