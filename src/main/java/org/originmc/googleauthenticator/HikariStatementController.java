@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.UUID;
@@ -59,7 +60,7 @@ public class HikariStatementController {
         try {
             PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS `auth_players` (" +
                     "`UUID` VARCHAR(40) NOT NULL," + // The UUID of the user
-                    "`SECRET` int(36)," + // The users secret code
+                    "`SECRET` VARCHAR(36)," + // The users secret code
                     "`IP` VARCHAR(15) NOT NULL," + // The IP column represents the last authenticated IP for the user
                     "`TRUST_IP` BIT(1) NOT NULL," + // Whether or not the player has their IP saved as a trusted IP
                     "PRIMARY KEY (`UUID`))");
@@ -102,8 +103,32 @@ public class HikariStatementController {
      * @return the AuthenticationData for the player
      */
     public AuthenticationData getAuthenticationData(UUID uuid) {
-        // TODO: Method implementation
-        return null;
+        Connection connection = getConnection();
+        AuthenticationData data = null; // default to null value
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `auth_players` WHERE UUID=? LIMIT 1");
+            statement.setString(1, uuid.toString());
+            ResultSet set = statement.executeQuery();
+
+            // Get the authentication data of the player
+            if (set.next()) {
+                data = new AuthenticationData(
+                        set.getString("SECRET"),
+                        set.getString("IP"),
+                        set.getBoolean("TRUST_IP")
+                );
+            }
+
+            // Close anything connection related
+            set.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "There was an error getting the token amount for UUID "
+                    + uuid.toString(), e);
+        }
+
+        return data;
     }
 
     /**
