@@ -35,7 +35,6 @@ public class PlayerListener implements Listener {
             if (playerData != null) {
                 plugin.addAuthenticationData(uuid, playerData);
                 String ip = player.getAddress().getAddress().getHostName();
-                System.out.print("IP address for " + player.getName() + " is " + ip);
                 // TODO: Authentication message and ip checks
             }
         });
