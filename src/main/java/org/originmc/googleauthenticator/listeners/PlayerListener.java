@@ -47,7 +47,7 @@ public class PlayerListener implements Listener {
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
             AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
 
-            if (!data.isAuthenticated()) {
+            if (data != null && !data.isAuthenticated()) {
                 // TODO: Process data
             }
         }
