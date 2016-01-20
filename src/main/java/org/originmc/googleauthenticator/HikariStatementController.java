@@ -3,11 +3,11 @@ package org.originmc.googleauthenticator;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class HikariStatementController {
@@ -91,11 +91,18 @@ public class HikariStatementController {
     }
 
     /**
-     * Returns the {@link HikariDataSource}
+     * Fetches auth data from MySQL database for a specific {@link net.md_5.bungee.api.connection.ProxiedPlayer}. If
+     * the {@link UUID} of the player is not in the database this method will return null.
      *
-     * @return the data source
+     * @param uuid the {@link UUID} of the {@link net.md_5.bungee.api.connection.ProxiedPlayer}
+     * @return the AuthenticationData for the player
      */
-    public DataSource getSource() {
-        return hikariDataSource;
+    public AuthenticationData getAuthenticationData(UUID uuid) {
+        // TODO: Method implementation
+        return null;
+    }
+
+    public void updateAuthenticationData(UUID uuid, AuthenticationData data) {
+        // TODO: Method implementation
     }
 }

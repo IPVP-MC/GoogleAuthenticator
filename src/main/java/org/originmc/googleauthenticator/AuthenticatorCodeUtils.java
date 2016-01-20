@@ -19,9 +19,9 @@ import java.util.Random;
  * <p>
  * src: https://code.google.com/p/vellum/wiki/GoogleAuthenticator
  */
-public class AuthenticatorCodeUtils {
+public final class AuthenticatorCodeUtils {
 
-    private static Random numberGenerator = new SecureRandom();
+    private final static Random numberGenerator = new SecureRandom();
 
     /**
      * Generates a random secret for the Google Authenticator client
