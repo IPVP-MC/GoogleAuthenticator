@@ -106,6 +106,12 @@ public class HikariStatementController {
         return null;
     }
 
+    /**
+     * Updates a {@link net.md_5.bungee.api.connection.ProxiedPlayer} authentication data in the MySQL database
+     *
+     * @param uuid the {@link UUID} of the player
+     * @param data the players {@link AuthenticationData}
+     */
     public void updateAuthenticationData(UUID uuid, AuthenticationData data) {
         // TODO: Method implementation
     }
