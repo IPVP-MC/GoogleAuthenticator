@@ -141,7 +141,7 @@ public final class AuthenticatorCodeUtils {
      * @return the QR barcode OTP Auth URL
      */
     public static String getQRBarcodeOtpAuthURL(String user, String host, String secret) {
-        return String.format("otpauth://totp/%s@%s&secret=%s", user, host, secret);
+        return String.format("otpauth://totp/%s@%s?secret=%s", user, host, secret);
     }
 
     private AuthenticatorCodeUtils() {
