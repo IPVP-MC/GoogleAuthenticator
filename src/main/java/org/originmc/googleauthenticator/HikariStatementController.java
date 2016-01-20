@@ -1,5 +1,6 @@
 package org.originmc.googleauthenticator;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -28,7 +29,7 @@ public class HikariStatementController {
         props.setProperty("dataSource.password", plugin.getConfig().getString("mysql.password"));
         props.setProperty("dataSource.databaseName", plugin.getConfig().getString("mysql.db"));
         props.setProperty("dataSource.serverName", plugin.getConfig().getString("mysql.host"));
-        props.setProperty("dataSource.portNumber", plugin.getConfig().getString("mysql.port"));
+        props.setProperty("dataSource.portNumber", String.valueOf(plugin.getConfig().getInt("mysql.port")));
 
         // Configure Hikari data pool
         HikariConfig hikariConfig = new HikariConfig(props);
@@ -38,6 +39,8 @@ public class HikariStatementController {
         hikariConfig.setMaximumPoolSize(10);
         hikariConfig.setConnectionTimeout(10000L);
         hikariConfig.setInitializationFailFast(false);
+        hikariConfig.setThreadFactory(new ThreadFactoryBuilder().setDaemon(true)
+                .setNameFormat("hikari-sql-pool-%d").build());
         this.hikariDataSource = new HikariDataSource(hikariConfig);
 
         // Test the connection
