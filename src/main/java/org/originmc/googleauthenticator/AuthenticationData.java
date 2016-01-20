@@ -3,7 +3,8 @@ package org.originmc.googleauthenticator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * A data class that holds authentication information for a {@link net.md_5.bungee.api.connection.ProxiedPlayer}
+ * A thread safe data class that holds authentication information for a
+ * {@link net.md_5.bungee.api.connection.ProxiedPlayer}
  */
 public final class AuthenticationData {
 
