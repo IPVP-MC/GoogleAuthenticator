@@ -27,7 +27,7 @@ public class AuthCommand extends Command {
             sender.sendMessage(new TextComponent("Only players can use this command"));
         } else if (args.length == 0) {
             // Create new authentication conversation
-            Conversation conversation = new Conversation(plugin, (ProxiedPlayer) sender, new AuthenticationBeginPrompt());
+            Conversation conversation = new Conversation(plugin, (ProxiedPlayer) sender, new AuthenticationBeginPrompt(plugin));
             conversation.addConversationCanceller((context, input) -> {
                 if (input.equalsIgnoreCase("exit")) {
                     TextComponent cancelMessage = new TextComponent("Cancelled two-factor setup process! Try again soon.");

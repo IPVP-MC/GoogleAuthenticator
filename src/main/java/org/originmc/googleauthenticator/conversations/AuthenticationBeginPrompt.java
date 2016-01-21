@@ -1,8 +1,15 @@
 package org.originmc.googleauthenticator.conversations;
 
 import net.md_5.bungee.api.chat.BaseComponent;
+import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
 
 public class AuthenticationBeginPrompt implements Prompt {
+
+    private GoogleAuthenticatorPlugin plugin;
+
+    public AuthenticationBeginPrompt(GoogleAuthenticatorPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public BaseComponent[] getPromptText(ConversationContext context) {
@@ -11,7 +18,7 @@ public class AuthenticationBeginPrompt implements Prompt {
 
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
-        return new AuthenticationIntroductionPrompt();
+        return new AuthenticationIntroductionPrompt(plugin);
     }
 
     @Override
