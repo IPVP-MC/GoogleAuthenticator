@@ -36,6 +36,8 @@ public final class AuthenticationTexts {
     public static final BaseComponent[] OPEN_APP_TEXT;
 
     static {
+        TextComponent emptyLine = new TextComponent("\n");
+
         // Create our grey brackets
         TextComponent leftBracket = new TextComponent("[");
         TextComponent rightBracket = new TextComponent("]");
@@ -69,19 +71,20 @@ public final class AuthenticationTexts {
         TextComponent preStartSecondPart = new TextComponent(" is clickable! ");
         preStartText.setColor(ChatColor.GREEN);
         preStartSecondPart.setColor(ChatColor.GREEN);
-        PRE_START_TEXT = new BaseComponent[]{ preStartText, leftBracket, space, rightBracket, preStartSecondPart, nextOrExit };
+        PRE_START_TEXT = new BaseComponent[]{ emptyLine, preStartText, leftBracket, space, rightBracket,
+                preStartSecondPart, nextOrExit, emptyLine };
 
         // Create BaseComponent[] INTRO_MESSAGE
         TextComponent introMessage = new TextComponent("Let's set up Two-factor authentication for your Minecraft " +
                 "account on Origin. ");
         introMessage.setColor(ChatColor.GREEN);
-        INTRO_MESSAGE = new BaseComponent[]{ introMessage, nextOrExit };
+        INTRO_MESSAGE = new BaseComponent[]{ emptyLine, introMessage, nextOrExit, emptyLine };
 
         // Create BaseComponent[] QUIT_INFORMATION
         TextComponent quitInformation = new TextComponent("You can quit this process by typing \"exit\" or you can click" +
                 " the Exit button at any time. ");
         quitInformation.setColor(ChatColor.GOLD);
-        QUIT_INFORMATION = new BaseComponent[]{ quitInformation, nextOrExit };
+        QUIT_INFORMATION = new BaseComponent[]{ emptyLine, quitInformation, nextOrExit, emptyLine };
 
         // Create BaseComponent[] INSTALL_APP_TEXT
         TextComponent installAppMain = new TextComponent("Firstly, you need to install the ");
@@ -90,12 +93,13 @@ public final class AuthenticationTexts {
         installAppMain.setColor(ChatColor.GREEN);
         installAppGoogleAuthenticator.setColor(ChatColor.AQUA);
         installAppSecond.setColor(ChatColor.GREEN);
-        INSTALL_APP_TEXT = new BaseComponent[]{ installAppMain, installAppGoogleAuthenticator, installAppSecond, nextOrExit };
+        INSTALL_APP_TEXT = new BaseComponent[]{ emptyLine, installAppMain, installAppGoogleAuthenticator,
+                installAppSecond, nextOrExit, emptyLine };
 
         // Create BaseComponent[] OPEN_APP_TEXT
         TextComponent openApp = new TextComponent("Open your Authenticator app and scan this QR code! (Press the + button) ");
         openApp.setColor(ChatColor.GREEN);
-        OPEN_APP_TEXT = new BaseComponent[]{openApp, nextOrExit};
+        OPEN_APP_TEXT = new BaseComponent[]{ emptyLine, openApp, nextOrExit, emptyLine };
         // TODO: Must give the map at this point
     }
 
