@@ -35,8 +35,14 @@ public final class AuthenticationTexts {
      */
     public static final BaseComponent[] OPEN_APP_TEXT;
 
+    /**
+     * A message that tells the player to enter their authentication code
+     */
+    public static final BaseComponent[] ENTER_CODE_TEXT;
+
     static {
         TextComponent emptyLine = new TextComponent("\n");
+        TextComponent emptySpace = new TextComponent(" ");
 
         // Create our grey brackets
         TextComponent leftBracket = new TextComponent("[");
@@ -53,7 +59,7 @@ public final class AuthenticationTexts {
         continueButton.setColor(ChatColor.GREEN);
 
         // Create the exit button
-        TextComponent exitButton = new TextComponent(" Exit");
+        TextComponent exitButton = new TextComponent("Exit");
         ClickEvent exitAction = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "exit");
         exitButton.setClickEvent(exitAction);
         exitButton.setColor(ChatColor.RED);
@@ -62,6 +68,7 @@ public final class AuthenticationTexts {
         TextComponent nextOrExit = new TextComponent(leftBracket);
         nextOrExit.addExtra(continueButton);
         nextOrExit.addExtra(bracketSpacer);
+        nextOrExit.addExtra(emptySpace);
         nextOrExit.addExtra(exitButton);
         nextOrExit.addExtra(rightBracket);
 
@@ -100,7 +107,12 @@ public final class AuthenticationTexts {
         TextComponent openApp = new TextComponent("Open your Authenticator app and scan this QR code! (Press the + button) ");
         openApp.setColor(ChatColor.GREEN);
         OPEN_APP_TEXT = new BaseComponent[]{ emptyLine, openApp, nextOrExit, emptyLine };
-        // TODO: Must give the map at this point
+
+        // Create BaseComponent[] ENTER_CODE_TEXT
+        TextComponent enterCode = new TextComponent("Please type in the code that your app is giving you. ");
+        openApp.setColor(ChatColor.GREEN);
+        ENTER_CODE_TEXT = new BaseComponent[]{ emptyLine, enterCode, leftBracket, exitButton, rightBracket, emptyLine };
+
     }
 
     private AuthenticationTexts() {

@@ -18,7 +18,8 @@ public class AuthenticationScanQRPrompt implements Prompt {
 
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
-        return null; // TODO: when they finish we need to verify their auth
+        // TODO: send QR code map
+        return new AuthenticationEnterCodePrompt(plugin);
     }
 
     @Override
