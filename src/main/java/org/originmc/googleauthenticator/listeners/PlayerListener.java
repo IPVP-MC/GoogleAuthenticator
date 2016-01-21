@@ -7,7 +7,6 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import org.originmc.googleauthenticator.AuthenticationData;
-import org.originmc.googleauthenticator.AuthenticatorCodeUtils;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
 
 import java.util.UUID;
@@ -36,7 +35,7 @@ public class PlayerListener implements Listener {
             if (playerData != null) {
                 plugin.addAuthenticationData(uuid, playerData);
 
-                if (playerData.isIpTrusted() && ip.equals(playerData.getIp())) {
+                if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
                     playerData.setAuthenticated(true);
                 } else {
                     // TODO: Tell the player they need to authenticate

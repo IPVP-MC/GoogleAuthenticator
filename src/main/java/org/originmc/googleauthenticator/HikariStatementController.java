@@ -149,7 +149,7 @@ public class HikariStatementController {
             statement.setString(1, uuid.toString());
             statement.setString(2, data.getSecret());
             statement.setString(3, data.getIp());
-            statement.setBoolean(4, data.isIpTrusted());
+            statement.setBoolean(4, data.isTrustingIp());
             statement.executeUpdate();
 
             // Close anything connection related

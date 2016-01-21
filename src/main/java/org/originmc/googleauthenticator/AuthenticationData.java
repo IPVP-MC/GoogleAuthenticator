@@ -59,7 +59,7 @@ public final class AuthenticationData {
      *
      * @return true if the player trusts the IP
      */
-    public boolean isIpTrusted() {
+    public boolean isTrustingIp() {
         return ipTrusted.get();
     }
 
