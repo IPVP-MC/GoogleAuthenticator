@@ -2,6 +2,7 @@ package org.originmc.googleauthenticator.conversations;
 
 
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -143,8 +144,13 @@ public class Conversation {
                 }
 
                 // Not abandoned, output the next prompt
-                currentPrompt = currentPrompt.acceptInput(context, input);
-                outputNextPrompt();
+                if (currentPrompt.isInputValid(context, input)) {
+                    currentPrompt = currentPrompt.acceptInput(context, input);
+                    outputCurrentPrompt();
+                } else {
+                    String output = currentPrompt.getFailedValidationText(context, input);
+                    getForWhom().sendMessage(new TextComponent(output));
+                }
             }
             // Spigot Start
         } catch (Throwable t) {
@@ -157,13 +163,11 @@ public class Conversation {
      * Displays the next user prompt and abandons the conversation if the next
      * prompt is null.
      */
-    public void outputNextPrompt() {
+    public void outputCurrentPrompt() {
         if (currentPrompt == null) {
             ProxyServer.getInstance().getPluginManager().callEvent(new ConversationEndEvent(getForWhom()));
         } else {
             context.getForWhom().sendMessage(currentPrompt.getPromptText(context));
-            currentPrompt = currentPrompt.acceptInput(context, null);
-            outputNextPrompt();
         }
     }
 

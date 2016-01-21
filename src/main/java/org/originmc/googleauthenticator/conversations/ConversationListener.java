@@ -8,22 +8,23 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ConversationListener implements Listener {
 
-    private static Map<ProxiedPlayer, Conversation> activeConversations = new HashMap<>();
+    private static Map<UUID, Conversation> activeConversations = new HashMap<>();
 
     @EventHandler
     public void processConversationWhenChatting(ChatEvent event) {
         if (event.getSender() instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
-            if (activeConversations.containsKey(player)) {
+            if (activeConversations.containsKey(player.getUniqueId())) {
                 event.setCancelled(true);
-                Conversation conversation = activeConversations.get(player);
+                Conversation conversation = activeConversations.get(player.getUniqueId());
 
                 if (conversation.getState() == Conversation.ConversationState.ENDED) {
-                    activeConversations.remove(player);
+                    activeConversations.remove(player.getUniqueId());
                 } else {
                     String input = event.getMessage();
                     conversation.acceptInput(input);
@@ -34,12 +35,12 @@ public class ConversationListener implements Listener {
 
     @EventHandler
     public void removeWhenDisconnecting(PlayerDisconnectEvent event) {
-        activeConversations.remove(event.getPlayer());
+        activeConversations.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void removeWhenAbandon(ConversationEndEvent event) {
-        activeConversations.remove(event.getPlayer());
+        activeConversations.remove(event.getPlayer().getUniqueId());
     }
 
     /**
@@ -48,9 +49,9 @@ public class ConversationListener implements Listener {
      * @param player the player
      * @param conversation the conversation
      */
-    public static void beginConversation(ProxiedPlayer player, Conversation conversation) {
-        activeConversations.put(player, conversation);
-        conversation.outputNextPrompt();
+    static void beginConversation(ProxiedPlayer player, Conversation conversation) {
+        activeConversations.put(player.getUniqueId(), conversation);
+        conversation.outputCurrentPrompt();
     }
 
     /**

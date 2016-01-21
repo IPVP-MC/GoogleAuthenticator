@@ -30,16 +30,6 @@ public interface Prompt {
     boolean isInputValid(ConversationContext context, String input);
 
     /**
-     * Override this method to accept and processes the validated input from
-     * the user. Using the input, the next Prompt in the prompt graph should
-     * be returned.
-     *
-     * @param input The validated input text from the user.
-     * @return The next Prompt in the prompt graph.
-     */
-    Prompt acceptValidatedInput(ConversationContext context, String input);
-
-    /**
      * Optionally override this method to display an additional message if the
      * user enters an invalid input.
      *
