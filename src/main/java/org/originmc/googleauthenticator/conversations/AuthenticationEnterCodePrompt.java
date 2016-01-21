@@ -23,11 +23,12 @@ public class AuthenticationEnterCodePrompt implements Prompt {
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
         int val = Integer.parseInt(input);
-        AuthenticationData data = plugin.getAuthenticationData(context.getForWhom().getUniqueId());
+        AuthenticationData data = (AuthenticationData) context.getSessionData("authdata");
 
         try {
             if (AuthenticatorCodeUtils.verifyCode(data.getSecret(), val, AuthenticatorCodeUtils.getTimeIndex(), 1)) {
                 // TODO: Message that they have been authenticated
+                plugin.addAuthenticationData(context.getForWhom().getUniqueId(), data);
                 data.setAuthenticated(true);
                 return null;
             }
