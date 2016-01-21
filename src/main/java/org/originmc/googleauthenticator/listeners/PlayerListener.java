@@ -7,6 +7,7 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import org.originmc.googleauthenticator.AuthenticationData;
+import org.originmc.googleauthenticator.AuthenticatorCodeUtils;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
 
 import java.util.UUID;
@@ -30,11 +31,11 @@ public class PlayerListener implements Listener {
         plugin.getProxy().getScheduler().runAsync(plugin, () -> {
             // TODO: Get the details (if exists) of the player and cache them
             AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
+            String ip = player.getAddress().getAddress().getHostName();
 
             // Proceed if the player has set up 2 factor auth
             if (playerData != null) {
                 plugin.addAuthenticationData(uuid, playerData);
-                String ip = player.getAddress().getAddress().getHostName();
                 // TODO: Authentication message and ip checks
             }
         });

@@ -124,7 +124,7 @@ public class HikariStatementController {
             statement.close();
             connection.close();
         } catch (SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "There was an error getting the token amount for UUID "
+            plugin.getLogger().log(Level.SEVERE, "There was an error getting the authentication data of UUID "
                     + uuid.toString(), e);
         }
 
@@ -138,6 +138,25 @@ public class HikariStatementController {
      * @param data the players {@link AuthenticationData}
      */
     public void updateAuthenticationData(UUID uuid, AuthenticationData data) {
-        // TODO: Method implementation
+        Connection connection = getConnection();
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO `auth_players` " +
+                    "(UUID, SECRET, IP, TRUST_IP) VALUES(?, ?, ?, ?)" +
+                    "ON DUPLICATE KEY UPDATE " +
+                    "SECRET=VALUES(SECRET), " +
+                    "IP=VALUES(IP), " +
+                    "TRUST_IP=VALUES(TRUST_IP)");
+            statement.setString(1, uuid.toString());
+            statement.setString(2, data.getSecret());
+            statement.setString(3, data.getIp());
+            statement.setBoolean(4, data.isIpTrusted());
+            statement.executeUpdate();
+
+            // Close anything connection related
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "There was an error updating data for UUID " + uuid.toString(), e);
+        }
     }
 }
