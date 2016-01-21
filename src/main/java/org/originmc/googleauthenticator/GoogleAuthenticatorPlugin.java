@@ -94,6 +94,17 @@ public class GoogleAuthenticatorPlugin extends Plugin {
     }
 
     /**
+     * Returns whether or not a {@link net.md_5.bungee.api.connection.ProxiedPlayer} has any
+     * stored {@link AuthenticationData}
+     *
+     * @param uuid the {@link UUID} of the {@link net.md_5.bungee.api.connection.ProxiedPlayer}
+     * @return true if the player has any auth data stored
+     */
+    public boolean hasAuthenticationData(UUID uuid) {
+        return playerAuthenticationData.containsKey(uuid);
+    }
+
+    /**
      * Saves the default config.yml file to disc if it exists
      */
     public void saveDefaultConfig() {
