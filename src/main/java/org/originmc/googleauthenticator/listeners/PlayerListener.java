@@ -29,14 +29,18 @@ public class PlayerListener implements Listener {
         UUID uuid = player.getUniqueId();
 
         plugin.getProxy().getScheduler().runAsync(plugin, () -> {
-            // TODO: Get the details (if exists) of the player and cache them
             AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
             String ip = player.getAddress().getAddress().getHostName();
 
             // Proceed if the player has set up 2 factor auth
             if (playerData != null) {
                 plugin.addAuthenticationData(uuid, playerData);
-                // TODO: Authentication message and ip checks
+
+                if (playerData.isIpTrusted() && ip.equals(playerData.getIp())) {
+                    playerData.setAuthenticated(true);
+                } else {
+                    // TODO: Tell the player they need to authenticate
+                }
             }
         });
     }
