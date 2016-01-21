@@ -34,6 +34,7 @@ public class GoogleAuthenticatorPlugin extends Plugin {
     @Override
     public void onDisable() {
         hikariController.closeDataSource();
+        playerAuthenticationData.keySet().forEach(this::clearAndUpdateAuthenticationData); // Save all data when disabling
     }
 
     /**
