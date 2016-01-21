@@ -79,8 +79,7 @@ public class Conversation {
      *
      * @param canceller The {@link ConversationCanceller} to add.
      */
-    void addConversationCanceller(ConversationCanceller canceller) {
-        canceller.setConversation(this);
+    public void addConversationCanceller(ConversationCanceller canceller) {
         this.cancellers.add(canceller);
     }
 
@@ -137,7 +136,7 @@ public class Conversation {
             if (currentPrompt != null) {
                 // Test for conversation abandonment based on input
                 for (ConversationCanceller canceller : cancellers) {
-                    if (canceller.cancelBasedOnInput(context, input)) {
+                    if (canceller.cancelBasedOnInput(this, input)) {
                         ProxyServer.getInstance().getPluginManager().callEvent(new ConversationEndEvent(getForWhom()));
                         return;
                     }
@@ -149,7 +148,9 @@ public class Conversation {
                     outputCurrentPrompt();
                 } else {
                     String output = currentPrompt.getFailedValidationText(context, input);
-                    getForWhom().sendMessage(new TextComponent(output));
+                    if (output != null && !output.isEmpty()) {
+                        getForWhom().sendMessage(new TextComponent(output));
+                    }
                 }
             }
             // Spigot Start

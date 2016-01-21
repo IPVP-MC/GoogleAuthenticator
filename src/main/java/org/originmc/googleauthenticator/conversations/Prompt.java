@@ -37,6 +37,6 @@ public interface Prompt {
      * @return A message explaining how to correct the input.
      */
     default String getFailedValidationText(ConversationContext context, String invalidInput) {
-        return null;
+        return "";
     }
 }
