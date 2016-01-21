@@ -110,7 +110,7 @@ public final class AuthenticationTexts {
 
         // Create BaseComponent[] ENTER_CODE_TEXT
         TextComponent enterCode = new TextComponent("Please type in the code that your app is giving you. ");
-        openApp.setColor(ChatColor.GREEN);
+        enterCode.setColor(ChatColor.GREEN);
         ENTER_CODE_TEXT = new BaseComponent[]{ emptyLine, enterCode, leftBracket, exitButton, rightBracket, emptyLine };
 
     }
