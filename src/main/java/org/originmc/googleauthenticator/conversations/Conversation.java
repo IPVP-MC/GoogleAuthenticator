@@ -14,9 +14,7 @@ import java.util.Map;
 /**
  * The Conversation class is responsible for tracking the current state of a
  * conversation, displaying prompts to the user, and dispatching the user's
- * response to the appropriate place. Conversation objects are not typically
- * instantiated directly. Instead a {@link ConversationFactory} is used to
- * construct identical conversations on demand.
+ * response to the appropriate place.
  * <p>
  * Conversation flow consists of a directed graph of {@link Prompt} objects.
  * Each time a prompt gets input from the user, it must return the next prompt
@@ -28,9 +26,6 @@ import java.util.Map;
  * to wait before abandoning the conversation. If the inactivity timeout is
  * reached, the conversation is abandoned and the user's incoming and outgoing
  * chat is returned to normal.
- * <p>
- * You should not construct a conversation manually. Instead, use the {@link
- * ConversationFactory} for access to all available options.
  */
 public class Conversation {
 
