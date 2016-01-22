@@ -1,8 +1,6 @@
 package org.originmc.googleauthenticator.conversations;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.originmc.googleauthenticator.AuthenticationData;
 import org.originmc.googleauthenticator.AuthenticatorCodeUtils;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;

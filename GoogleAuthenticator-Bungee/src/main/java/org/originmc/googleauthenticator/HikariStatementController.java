@@ -3,7 +3,6 @@ package org.originmc.googleauthenticator;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.originmc.googleauthenticator.conversations.Conversation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
