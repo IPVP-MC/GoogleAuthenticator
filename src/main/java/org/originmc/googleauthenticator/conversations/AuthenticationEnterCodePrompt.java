@@ -5,8 +5,6 @@ import org.originmc.googleauthenticator.AuthenticationData;
 import org.originmc.googleauthenticator.AuthenticatorCodeUtils;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
 
-import java.util.logging.Level;
-
 public class AuthenticationEnterCodePrompt implements Prompt {
 
     private GoogleAuthenticatorPlugin plugin;
@@ -22,29 +20,20 @@ public class AuthenticationEnterCodePrompt implements Prompt {
 
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
-        int val = Integer.parseInt(input);
         AuthenticationData data = (AuthenticationData) context.getSessionData("authdata");
-
-        try {
-            if (AuthenticatorCodeUtils.verifyCode(data.getSecret(), val, AuthenticatorCodeUtils.getTimeIndex(), 1)) {
-                plugin.addAuthenticationData(context.getForWhom().getUniqueId(), data);
-                data.setAuthenticated(true);
-                context.getForWhom().sendMessage(AuthenticationTexts.AUTHENTICATED_TEXT);
-                return null; // End the conversation
-            }
-        } catch (Exception ex) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to verify auth code", ex);
-        }
-
-        return this;
+        plugin.addAuthenticationData(context.getForWhom().getUniqueId(), data);
+        data.setAuthenticated(true);
+        context.getForWhom().sendMessage(AuthenticationTexts.AUTHENTICATED_TEXT);
+        return null; // End the conversation
     }
 
     @Override
     public boolean isInputValid(ConversationContext context, String input) {
         try {
-            Integer.parseInt(input); // Only doing this to check if it's a valid number
-            return true;
-        } catch (NumberFormatException ex) {
+            int val = Integer.parseInt(input); // Only doing this to check if it's a valid number
+            AuthenticationData data = (AuthenticationData) context.getSessionData("authdata");
+            return AuthenticatorCodeUtils.verifyCode(data.getSecret(), val, AuthenticatorCodeUtils.getTimeIndex(), 1);
+        } catch (Exception ex) {
             return false;
         }
     }
