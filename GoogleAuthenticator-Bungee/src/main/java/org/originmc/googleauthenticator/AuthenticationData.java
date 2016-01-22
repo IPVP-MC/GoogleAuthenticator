@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class AuthenticationData {
 
     private final String secret;
-    private final String ip;
+    private volatile String ip;
     private AtomicBoolean ipTrusted;
     private AtomicBoolean authenticated = new AtomicBoolean(false);
 
@@ -52,6 +52,15 @@ public final class AuthenticationData {
      */
     public String getIp() {
         return ip;
+    }
+
+    /**
+     * Sets the authenticated IP address for the player
+     *
+     * @param ip the most recently authenticated IP address
+     */
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     /**

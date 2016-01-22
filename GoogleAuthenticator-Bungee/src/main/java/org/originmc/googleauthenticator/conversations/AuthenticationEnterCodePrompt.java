@@ -23,6 +23,7 @@ public class AuthenticationEnterCodePrompt implements Prompt {
         AuthenticationData data = (AuthenticationData) context.getSessionData("authdata");
         plugin.addAuthenticationData(context.getForWhom().getUniqueId(), data);
         data.setAuthenticated(true);
+        data.setIp(context.getForWhom().getAddress().getAddress().getHostName());
         context.getForWhom().sendMessage(AuthenticationTexts.AUTHENTICATED_TEXT);
         return null; // End the conversation
     }

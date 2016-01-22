@@ -21,6 +21,7 @@ public class AuthenticationLoginEnterCodePrompt extends AuthenticationEnterCodeP
     public Prompt acceptInput(ConversationContext context, String input) {
         AuthenticationData data = plugin.getAuthenticationData(context.getForWhom().getUniqueId());
         data.setAuthenticated(true);
+        data.setIp(context.getForWhom().getAddress().getAddress().getHostName());
         context.getForWhom().sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
         return null; // End the conversation
     }
