@@ -109,20 +109,20 @@ public final class AuthenticationTexts {
         TextComponent preStartSecondPart = new TextComponent(" is clickable! ");
         preStartText.setColor(ChatColor.GREEN);
         preStartSecondPart.setColor(ChatColor.GREEN);
-        PRE_START_TEXT = new BaseComponent[]{ emptyLine, preStartText, leftBracket, space, rightBracket,
+        PRE_START_TEXT = new BaseComponent[]{ preStartText, leftBracket, space, rightBracket,
                 preStartSecondPart, nextOrExit, emptyLine };
 
         // Create BaseComponent[] INTRO_MESSAGE
         TextComponent introMessage = new TextComponent("Let's set up Two-factor authentication for your Minecraft " +
                 "account on Origin. ");
         introMessage.setColor(ChatColor.GREEN);
-        INTRO_MESSAGE = new BaseComponent[]{ emptyLine, introMessage, nextOrExit, emptyLine };
+        INTRO_MESSAGE = new BaseComponent[]{ introMessage, nextOrExit, emptyLine };
 
         // Create BaseComponent[] QUIT_INFORMATION
         TextComponent quitInformation = new TextComponent("You can quit this process by typing \"exit\" or you can click" +
                 " the Exit button at any time. ");
         quitInformation.setColor(ChatColor.GOLD);
-        QUIT_INFORMATION = new BaseComponent[]{ emptyLine, quitInformation, nextOrExit, emptyLine };
+        QUIT_INFORMATION = new BaseComponent[]{ quitInformation, nextOrExit, emptyLine };
 
         // Create BaseComponent[] INSTALL_APP_TEXT
         TextComponent installAppMain = new TextComponent("Firstly, you need to install the ");
@@ -131,18 +131,18 @@ public final class AuthenticationTexts {
         installAppMain.setColor(ChatColor.GREEN);
         installAppGoogleAuthenticator.setColor(ChatColor.AQUA);
         installAppSecond.setColor(ChatColor.GREEN);
-        INSTALL_APP_TEXT = new BaseComponent[]{ emptyLine, installAppMain, installAppGoogleAuthenticator,
+        INSTALL_APP_TEXT = new BaseComponent[]{ installAppMain, installAppGoogleAuthenticator,
                 installAppSecond, nextOrExit, emptyLine };
 
         // Create BaseComponent[] OPEN_APP_TEXT
         TextComponent openApp = new TextComponent("Open your Authenticator app and scan this QR code! (Press the + button) ");
         openApp.setColor(ChatColor.GREEN);
-        OPEN_APP_TEXT = new BaseComponent[]{ emptyLine, openApp, nextOrExit, emptyLine };
+        OPEN_APP_TEXT = new BaseComponent[]{ openApp, nextOrExit, emptyLine };
 
         // Create BaseComponent[] ENTER_CODE_TEXT
         TextComponent enterCode = new TextComponent("Please type in the code that your app is giving you. ");
         enterCode.setColor(ChatColor.GREEN);
-        ENTER_CODE_TEXT = new BaseComponent[]{ emptyLine, enterCode, leftBracket, exitButton, rightBracket, emptyLine };
+        ENTER_CODE_TEXT = new BaseComponent[]{ enterCode, leftBracket, exitButton, rightBracket, emptyLine };
 
         // Create BaseComponent[] AUTHENTICATED_TEXT
         TextComponent auth = new TextComponent("Thank you for enabling Origin's two-factor authentication!\n" +
@@ -153,7 +153,7 @@ public final class AuthenticationTexts {
         auth.setColor(ChatColor.GREEN);
         yesButton.setColor(ChatColor.GREEN);
         yesButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/auth ipenable"));
-        AUTHENTICATED_TEXT = new BaseComponent[]{ emptyLine, auth, leftBracket, yesButton, rightBracket, emptyLine };
+        AUTHENTICATED_TEXT = new BaseComponent[]{ auth, leftBracket, yesButton, rightBracket, emptyLine };
 
         // Create BaseComponent[] LOGIN_REQUIRES_AUTH
         TextComponent loginAuth = new TextComponent("You have two-factor authentication enabled on this account!\n");
@@ -161,7 +161,7 @@ public final class AuthenticationTexts {
                 "be able to move servers. If you enabled remember me, your IP is not the same anymore.");
         loginAuth.setColor(ChatColor.GREEN);
         loginAuth2.setColor(ChatColor.YELLOW);
-        LOGIN_REQUIRES_AUTH = new BaseComponent[]{ emptyLine, loginAuth, loginAuth2, emptyLine };
+        LOGIN_REQUIRES_AUTH = new BaseComponent[]{ loginAuth, loginAuth2, emptyLine };
 
         // Create BaseComponent[] LOGIN_REQUIRES_AUTH_ASK
         TextComponent loginAuthAsk = new TextComponent("Please type in the code that your app is giving you.");
@@ -171,12 +171,12 @@ public final class AuthenticationTexts {
         // Create NOW_AUTHENTICATED
         TextComponent authenticated = new TextComponent("You are now authenticated.");
         authenticated.setColor(ChatColor.GREEN);
-        NOW_AUTHENTICATED = new BaseComponent[]{ emptyLine, authenticated };
+        NOW_AUTHENTICATED = new BaseComponent[]{ authenticated };
 
         // Create CANCEL_SETUP
         TextComponent cancelSetup = new TextComponent("Cancelled two-factor setup process! Try again soon.");
         cancelSetup.setColor(ChatColor.RED);
-        CANCEL_SETUP = new BaseComponent[]{ emptyLine, cancelSetup };
+        CANCEL_SETUP = new BaseComponent[]{ cancelSetup };
 
         // Create NEED_TO_AUTHENTICATE
         TextComponent needToAuth = new TextComponent("You need to authenticate yourself first!");
