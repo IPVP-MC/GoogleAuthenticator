@@ -45,6 +45,11 @@ public final class AuthenticationTexts {
      */
     public static final BaseComponent[] AUTHENTICATED_TEXT;
 
+    /**
+     * A message that tells the player they need to authenticate when they login
+     */
+    public static final BaseComponent[] LOGIN_REQUIRES_AUTH;
+
     static {
         TextComponent emptyLine = new TextComponent("\n");
         TextComponent emptySpace = new TextComponent(" ");
@@ -116,7 +121,7 @@ public final class AuthenticationTexts {
         // Create BaseComponent[] ENTER_CODE_TEXT
         TextComponent enterCode = new TextComponent("Please type in the code that your app is giving you. ");
         enterCode.setColor(ChatColor.GREEN);
-        ENTER_CODE_TEXT = new BaseComponent[]{ emptyLine, enterCode, leftBracket, exitButton, rightBracket, emptyLine };
+        ENTER_CODE_TEXT = new BaseComponent[]{ enterCode, leftBracket, exitButton, rightBracket, emptyLine };
 
         // Create BaseComponent[] AUTHENTICATED_TEXT
         TextComponent auth = new TextComponent("Thank you for enabling Origin's two-factor authentication!\n" +
@@ -128,6 +133,13 @@ public final class AuthenticationTexts {
         yesButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/auth ipenable"));
         AUTHENTICATED_TEXT = new BaseComponent[]{ emptyLine, auth, leftBracket, yesButton, rightBracket, emptyLine };
 
+        // Create BaseComponent[] LOGIN_REQUIRES_AUTH
+        TextComponent loginAuth = new TextComponent("You have two-factor authentication enabled on this account!\n");
+        TextComponent loginAuth2 = new TextComponent("Please enter your 6 digit code from the Google Authenticator app to" +
+                "be able to move servers. If you enabled remember me, your IP is not the same anymore.");
+        loginAuth.setColor(ChatColor.GREEN);
+        loginAuth2.setColor(ChatColor.YELLOW);
+        LOGIN_REQUIRES_AUTH = new BaseComponent[]{ emptyLine, loginAuth, loginAuth2, emptyLine };
     }
 
     private AuthenticationTexts() {

@@ -8,6 +8,9 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import org.originmc.googleauthenticator.AuthenticationData;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
+import org.originmc.googleauthenticator.conversations.AuthenticationLoginEnterCodePrompt;
+import org.originmc.googleauthenticator.conversations.AuthenticationTexts;
+import org.originmc.googleauthenticator.conversations.Conversation;
 
 import java.util.UUID;
 
@@ -38,7 +41,9 @@ public class PlayerListener implements Listener {
                 if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
                     playerData.setAuthenticated(true);
                 } else {
-                    // TODO: Tell the player they need to authenticate
+                    player.sendMessage(AuthenticationTexts.LOGIN_REQUIRES_AUTH);
+                    Conversation conversation = new Conversation(plugin, player, new AuthenticationLoginEnterCodePrompt(plugin));
+                    conversation.begin();
                 }
             }
         });
