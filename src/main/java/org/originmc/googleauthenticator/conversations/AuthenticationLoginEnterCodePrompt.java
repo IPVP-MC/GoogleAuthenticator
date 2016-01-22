@@ -15,7 +15,7 @@ public class AuthenticationLoginEnterCodePrompt extends AuthenticationEnterCodeP
 
     @Override
     public BaseComponent[] getPromptText(ConversationContext context) {
-        return AuthenticationTexts.ENTER_CODE_TEXT;
+        return new BaseComponent[]{ new TextComponent(ChatColor.GREEN + "Please type in the code that your app is giving you.") };
     }
 
     @Override
