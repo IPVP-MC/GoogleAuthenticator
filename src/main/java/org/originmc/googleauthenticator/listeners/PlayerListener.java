@@ -1,5 +1,7 @@
 package org.originmc.googleauthenticator.listeners;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -57,7 +59,8 @@ public class PlayerListener implements Listener {
             AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
 
             if (data != null && !data.isAuthenticated()) {
-                // TODO: Process data
+                event.setCancelled(true);
+                player.sendMessage(new TextComponent(ChatColor.RED + "You cannot run commands until you authenticate!"));
             }
         }
     }
