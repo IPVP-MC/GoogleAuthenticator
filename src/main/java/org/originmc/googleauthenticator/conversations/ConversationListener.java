@@ -5,6 +5,7 @@ import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class ConversationListener implements Listener {
 
     private static Map<UUID, Conversation> activeConversations = new HashMap<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void processConversationWhenChatting(ChatEvent event) {
         if (event.getSender() instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
