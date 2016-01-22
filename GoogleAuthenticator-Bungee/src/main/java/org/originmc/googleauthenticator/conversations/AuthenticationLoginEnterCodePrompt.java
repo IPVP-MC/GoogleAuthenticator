@@ -29,7 +29,7 @@ public class AuthenticationLoginEnterCodePrompt extends AuthenticationEnterCodeP
     @Override
     public boolean isInputValid(ConversationContext context, String input) {
         try {
-            int val = Integer.parseInt(input); // Only doing this to check if it's a valid number
+            int val = Integer.parseInt(input.replace(" ", "")); // Only doing this to check if it's a valid number
             AuthenticationData data = plugin.getAuthenticationData(context.getForWhom().getUniqueId());
             return AuthenticatorCodeUtils.verifyCode(data.getSecret(), val, AuthenticatorCodeUtils.getTimeIndex(), 7);
         } catch (Exception ex) {
