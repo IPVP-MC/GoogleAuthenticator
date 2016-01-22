@@ -27,10 +27,10 @@ public class AuthenticationEnterCodePrompt implements Prompt {
 
         try {
             if (AuthenticatorCodeUtils.verifyCode(data.getSecret(), val, AuthenticatorCodeUtils.getTimeIndex(), 1)) {
-                // TODO: Message that they have been authenticated
                 plugin.addAuthenticationData(context.getForWhom().getUniqueId(), data);
                 data.setAuthenticated(true);
-                return null;
+                context.getForWhom().sendMessage(AuthenticationTexts.AUTHENTICATED_TEXT);
+                return null; // End the conversation
             }
         } catch (Exception ex) {
             plugin.getLogger().log(Level.SEVERE, "Failed to verify auth code", ex);

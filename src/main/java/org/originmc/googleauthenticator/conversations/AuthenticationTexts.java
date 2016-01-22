@@ -40,6 +40,11 @@ public final class AuthenticationTexts {
      */
     public static final BaseComponent[] ENTER_CODE_TEXT;
 
+    /**
+     * A message that tells the player that they have successfully authenticated
+     */
+    public static final BaseComponent[] AUTHENTICATED_TEXT;
+
     static {
         TextComponent emptyLine = new TextComponent("\n");
         TextComponent emptySpace = new TextComponent(" ");
@@ -112,6 +117,16 @@ public final class AuthenticationTexts {
         TextComponent enterCode = new TextComponent("Please type in the code that your app is giving you. ");
         enterCode.setColor(ChatColor.GREEN);
         ENTER_CODE_TEXT = new BaseComponent[]{ emptyLine, enterCode, leftBracket, exitButton, rightBracket, emptyLine };
+
+        // Create BaseComponent[] AUTHENTICATED_TEXT
+        TextComponent auth = new TextComponent("Thank you for enabling Origin's two-factor authentication!\n" +
+                "From now on you will need to enter your code every time you log in (unless you select 'remember me')," +
+                "in order to verify that it is you.\n" +
+                "Do you want us to remember you by your IP address so you won't have to enter the code unless your IP changes? ");
+        TextComponent yesButton = new TextComponent("Yes");
+        yesButton.setColor(ChatColor.GREEN);
+        yesButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/auth ipenable"));
+        AUTHENTICATED_TEXT = new BaseComponent[]{ emptyLine, auth, leftBracket, yesButton, rightBracket, emptyLine };
 
     }
 
