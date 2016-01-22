@@ -169,7 +169,7 @@ public class HikariStatementController {
         Connection connection = getConnection();
 
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM `auth_player` " +
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM `auth_players` " +
                     "WHERE " +
                     "UUID=?");
             statement.setString(1, uuid.toString());
