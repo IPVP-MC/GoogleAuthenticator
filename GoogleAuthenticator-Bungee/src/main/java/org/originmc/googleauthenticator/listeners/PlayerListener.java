@@ -52,7 +52,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerCommand(ChatEvent event) {
-        // TODO: Check if the player is unauthorized - if not then don't allow the command
         if (event.getSender() instanceof ProxiedPlayer && !event.isCancelled()) {
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
             AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
@@ -73,6 +72,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerSwitchServers(ServerConnectEvent event) {
-        // TODO: Implementation
+        ProxiedPlayer player = event.getPlayer();
+        AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
+
+        if (data != null && !data.isAuthenticated()) {
+            event.setCancelled(true);
+            player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
+        }
     }
 }
