@@ -6,6 +6,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import org.originmc.googleauthenticator.AuthenticationData;
@@ -70,5 +71,10 @@ public class PlayerListener implements Listener {
         ProxiedPlayer player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         plugin.clearAndUpdateAuthenticationData(uuid); // Remove and clear the players auth data
+    }
+
+    @EventHandler
+    public void onPlayerSwitchServers(ServerConnectEvent event) {
+        // TODO: Implementation
     }
 }
