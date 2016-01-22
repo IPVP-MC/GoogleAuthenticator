@@ -126,7 +126,7 @@ public final class AuthenticatorCodeUtils {
      */
     private static String getQRBarcodeURLQuery(String user, String host, String secret) {
         try {
-            return "chs=200x200&chld=M%7C0&cht=qr&chl=" + URLEncoder.encode(getQRBarcodeOtpAuthURL(user, host, secret), "UTF-8");
+            return "chs=128x128&chld=M%7C0&cht=qr&chl=" + URLEncoder.encode(getQRBarcodeOtpAuthURL(user, host, secret), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
