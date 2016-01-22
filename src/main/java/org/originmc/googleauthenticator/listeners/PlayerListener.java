@@ -60,7 +60,7 @@ public class PlayerListener implements Listener {
 
             if (data != null && !data.isAuthenticated()) {
                 event.setCancelled(true);
-                player.sendMessage(new TextComponent(ChatColor.RED + "You cannot run commands until you authenticate!"));
+                player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
             }
         }
     }

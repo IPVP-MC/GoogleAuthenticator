@@ -50,6 +50,27 @@ public final class AuthenticationTexts {
      */
     public static final BaseComponent[] LOGIN_REQUIRES_AUTH;
 
+    /**
+     * A message that tells the player to enter their authentication code when they login
+     */
+    public static final BaseComponent[] LOGIN_REQUIRES_AUTH_ASK;
+
+    /**
+     * A messages that tells the player they have been authenticated
+     */
+    public static final BaseComponent[] NOW_AUTHENTICATED;
+
+    public static final BaseComponent[] CANCEL_SETUP;
+
+    public static final BaseComponent[] NEED_TO_AUTHENTICATE;
+
+    public static final BaseComponent[] DISABLED_AUTHENTICATION;
+
+    public static final BaseComponent[] NOW_REMEMBERING_IP;
+
+    public static final BaseComponent[] NO_LONGER_REMEMBERING_IP;
+
+    // Ugly instantiation of basecomponents
     static {
         TextComponent emptyLine = new TextComponent("\n");
         TextComponent emptySpace = new TextComponent(" ");
@@ -140,6 +161,44 @@ public final class AuthenticationTexts {
         loginAuth.setColor(ChatColor.GREEN);
         loginAuth2.setColor(ChatColor.YELLOW);
         LOGIN_REQUIRES_AUTH = new BaseComponent[]{ emptyLine, loginAuth, loginAuth2, emptyLine };
+
+        // Create BaseComponent[] LOGIN_REQUIRES_AUTH_ASK
+        TextComponent loginAuthAsk = new TextComponent("Please type in the code that your app is giving you.");
+        loginAuthAsk.setColor(ChatColor.GREEN);
+        LOGIN_REQUIRES_AUTH_ASK = new BaseComponent[]{ loginAuthAsk, emptyLine };
+
+        // Create NOW_AUTHENTICATED
+        TextComponent authenticated = new TextComponent("You are now authenticated.");
+        authenticated.setColor(ChatColor.GREEN);
+        NOW_AUTHENTICATED = new BaseComponent[]{ emptyLine, authenticated };
+
+        // Create CANCEL_SETUP
+        TextComponent cancelSetup = new TextComponent("Cancelled two-factor setup process! Try again soon.");
+        cancelSetup.setColor(ChatColor.RED);
+        CANCEL_SETUP = new BaseComponent[]{ emptyLine, cancelSetup };
+
+        // Create NEED_TO_AUTHENTICATE
+        TextComponent needToAuth = new TextComponent("You need to authenticate yourself first!");
+        needToAuth.setColor(ChatColor.RED);
+        NEED_TO_AUTHENTICATE = new BaseComponent[]{ needToAuth };
+
+        // Create DISABLED_AUTHENTICATION
+        TextComponent disabledAuth = new TextComponent("Disabled two-factor authentication! You can still enable it " +
+                "again by running \"/auth\"");
+        disabledAuth.setColor(ChatColor.GREEN);
+        DISABLED_AUTHENTICATION = new BaseComponent[]{ disabledAuth };
+
+        // Create NOW_REMEMBERING_IP
+        TextComponent rememberingIp = new TextComponent("We will now remember you by your " +
+                "IP and will no longer ask for a code every time you log in!");
+        rememberingIp.setColor(ChatColor.GREEN);
+        NOW_REMEMBERING_IP = new BaseComponent[]{ rememberingIp };
+
+        // Create NO_LONGER_REMEMBERING_IP
+        TextComponent noLongerRememberingIp = new TextComponent("We will no longer remember you by your " +
+                "IP and will now require a code every time you log in!");
+        noLongerRememberingIp.setColor(ChatColor.GREEN);
+        NO_LONGER_REMEMBERING_IP = new BaseComponent[]{ noLongerRememberingIp };
     }
 
     private AuthenticationTexts() {

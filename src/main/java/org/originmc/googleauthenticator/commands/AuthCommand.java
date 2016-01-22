@@ -9,6 +9,7 @@ import org.originmc.googleauthenticator.AuthenticationData;
 import org.originmc.googleauthenticator.AuthenticatorCodeUtils;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
 import org.originmc.googleauthenticator.conversations.AuthenticationBeginPrompt;
+import org.originmc.googleauthenticator.conversations.AuthenticationTexts;
 import org.originmc.googleauthenticator.conversations.Conversation;
 
 /**
@@ -32,14 +33,11 @@ public class AuthCommand extends Command {
             if (args.length == 0) {
                 // Create new authentication conversation
                 Conversation conversation = new Conversation(plugin, (ProxiedPlayer) sender, new AuthenticationBeginPrompt(plugin));
-                conversation.getContext().setSessionData("authdata",
-                        new AuthenticationData(AuthenticatorCodeUtils.generateNewSecret(),
-                                player.getAddress().getAddress().getHostName()));
+                conversation.getContext().setSessionData("authdata", new AuthenticationData(AuthenticatorCodeUtils.generateNewSecret(),
+                        player.getAddress().getAddress().getHostName()));
                 conversation.addConversationCanceller((context, input) -> {
                     if (input.equalsIgnoreCase("exit")) {
-                        TextComponent cancelMessage = new TextComponent("Cancelled two-factor setup process! Try again soon.");
-                        cancelMessage.setColor(ChatColor.RED);
-                        context.getForWhom().sendMessage(cancelMessage);
+                        player.sendMessage(AuthenticationTexts.CANCEL_SETUP);
                         return true;
                     }
                     return false;
@@ -47,31 +45,28 @@ public class AuthCommand extends Command {
                 conversation.begin();
             } else if (args[0].equalsIgnoreCase("off")) {
                 if (!plugin.hasAuthenticationData(player.getUniqueId())) {
-                    player.sendMessage(TextComponent.fromLegacyText(ChatColor.RED + "You need to authenticate yourself first!"));
+                    player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
                 } else {
                     plugin.getProxy().getScheduler().runAsync(plugin, () -> {
                         plugin.removeAuthenticationData(player.getUniqueId());
-                        player.sendMessage(TextComponent.fromLegacyText(ChatColor.GREEN + "Disabled two-factor " +
-                                "authentication! You can still enable it again by running \"/auth\""));
+                        player.sendMessage(AuthenticationTexts.DISABLED_AUTHENTICATION);
                     });
                 }
             } else if (args[0].equalsIgnoreCase("ipenable")) {
                 if (!plugin.hasAuthenticationData(player.getUniqueId())) {
-                    player.sendMessage(TextComponent.fromLegacyText(ChatColor.RED + "You need to authenticate yourself first!"));
+                    player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
                 } else {
                     AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
                     data.setIpTrusted(true);
-                    player.sendMessage(TextComponent.fromLegacyText(ChatColor.GREEN + "We will now remember you by your " +
-                            "IP and will no longer ask for a code every time you log in!"));
+                    player.sendMessage(AuthenticationTexts.NOW_REMEMBERING_IP);
                 }
             } else if (args[0].equalsIgnoreCase("ipdisable")) {
                 if (!plugin.hasAuthenticationData(player.getUniqueId())) {
-                    player.sendMessage(TextComponent.fromLegacyText(ChatColor.RED + "You need to authenticate yourself first!"));
+                    player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
                 } else {
                     AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
                     data.setIpTrusted(false);
-                    player.sendMessage(TextComponent.fromLegacyText(ChatColor.GREEN + "We will no longer remember you by your " +
-                            "IP and will now require a code every time you log in!"));
+                    player.sendMessage(AuthenticationTexts.NO_LONGER_REMEMBERING_IP);
                 }
             } else {
                 player.sendMessage(TextComponent.fromLegacyText(ChatColor.RED + "Unknown sub command."));

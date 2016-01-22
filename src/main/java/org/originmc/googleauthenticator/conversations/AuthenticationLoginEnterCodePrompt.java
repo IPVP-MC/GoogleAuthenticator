@@ -15,14 +15,14 @@ public class AuthenticationLoginEnterCodePrompt extends AuthenticationEnterCodeP
 
     @Override
     public BaseComponent[] getPromptText(ConversationContext context) {
-        return new BaseComponent[]{ new TextComponent(ChatColor.GREEN + "Please type in the code that your app is giving you.") };
+        return AuthenticationTexts.LOGIN_REQUIRES_AUTH_ASK;
     }
 
     @Override
     public Prompt acceptInput(ConversationContext context, String input) {
         AuthenticationData data = plugin.getAuthenticationData(context.getForWhom().getUniqueId());
         data.setAuthenticated(true);
-        context.getForWhom().sendMessage(new TextComponent(ChatColor.GREEN + "You are now authenticated"));
+        context.getForWhom().sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
         return null; // End the conversation
     }
 
