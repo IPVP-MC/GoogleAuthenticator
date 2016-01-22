@@ -27,7 +27,6 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
 
     public void giveMapToPlayer(Player player, String url) {
         World world = Bukkit.getWorlds().get(0);
-        player.sendMessage(url);
 
         getServer().getScheduler().runTaskAsynchronously(this, () -> {
             try {
