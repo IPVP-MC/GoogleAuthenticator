@@ -84,6 +84,17 @@ public class GoogleAuthenticatorPlugin extends Plugin {
     }
 
     /**
+     * Removes the {@link AuthenticationData} of a {@link net.md_5.bungee.api.connection.ProxiedPlayer} and
+     * updates the MySQL database to reflect the changes
+     *
+     * @param uuid the {@link UUID} of the player
+     */
+    public void removeAuthenticationData(UUID uuid) {
+        playerAuthenticationData.remove(uuid);
+        getDatabase().removeAuthenticationData(uuid);
+    }
+
+    /**
      * Gets the {@link AuthenticationData} of a {@link net.md_5.bungee.api.connection.ProxiedPlayer}
      *
      * @param uuid the {@link UUID} of the {@link net.md_5.bungee.api.connection.ProxiedPlayer}

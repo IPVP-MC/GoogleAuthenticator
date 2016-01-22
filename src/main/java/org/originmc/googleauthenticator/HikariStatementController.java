@@ -3,6 +3,7 @@ package org.originmc.googleauthenticator;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.originmc.googleauthenticator.conversations.Conversation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -150,6 +151,29 @@ public class HikariStatementController {
             statement.setString(2, data.getSecret());
             statement.setString(3, data.getIp());
             statement.setBoolean(4, data.isTrustingIp());
+            statement.executeUpdate();
+
+            // Close anything connection related
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "There was an error updating data for UUID " + uuid.toString(), e);
+        }
+    }
+
+    /**
+     * Removes the {@link AuthenticationData} of a {@link net.md_5.bungee.api.connection.ProxiedPlayer}
+     *
+     * @param uuid the {@link UUID} of the player
+     */
+    public void removeAuthenticationData(UUID uuid) {
+        Connection connection = getConnection();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM `auth_player` " +
+                    "WHERE " +
+                    "UUID=?");
+            statement.setString(1, uuid.toString());
             statement.executeUpdate();
 
             // Close anything connection related
