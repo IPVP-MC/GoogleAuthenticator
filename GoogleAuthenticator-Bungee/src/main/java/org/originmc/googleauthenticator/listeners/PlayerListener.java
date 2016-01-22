@@ -53,7 +53,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerCommand(ChatEvent event) {
         // TODO: Check if the player is unauthorized - if not then don't allow the command
-        if (event.getSender() instanceof ProxiedPlayer) {
+        if (event.getSender() instanceof ProxiedPlayer && !event.isCancelled()) {
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
             AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
 

@@ -146,10 +146,11 @@ public final class AuthenticationTexts {
 
         // Create BaseComponent[] AUTHENTICATED_TEXT
         TextComponent auth = new TextComponent("Thank you for enabling Origin's two-factor authentication!\n" +
-                "From now on you will need to enter your code every time you log in (unless you select 'remember me')," +
+                "From now on you will need to enter your code every time you log in (unless you select 'remember me') " +
                 "in order to verify that it is you.\n" +
                 "Do you want us to remember you by your IP address so you won't have to enter the code unless your IP changes? ");
         TextComponent yesButton = new TextComponent("Yes");
+        auth.setColor(ChatColor.GREEN);
         yesButton.setColor(ChatColor.GREEN);
         yesButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/auth ipenable"));
         AUTHENTICATED_TEXT = new BaseComponent[]{ emptyLine, auth, leftBracket, yesButton, rightBracket, emptyLine };

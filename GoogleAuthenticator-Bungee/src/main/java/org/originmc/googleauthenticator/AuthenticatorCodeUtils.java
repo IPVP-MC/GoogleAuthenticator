@@ -1,6 +1,6 @@
 package org.originmc.googleauthenticator;
 
-import org.jboss.aerogear.security.otp.api.Base32;
+import org.apache.commons.codec.binary.Base32;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -22,6 +22,7 @@ import java.util.Random;
 public final class AuthenticatorCodeUtils {
 
     private final static Random numberGenerator = new SecureRandom();
+    private final static Base32 base32 = new Base32();
 
     /**
      * Generates a random secret for the Google Authenticator client
@@ -31,7 +32,7 @@ public final class AuthenticatorCodeUtils {
     public static String generateNewSecret() {
         byte[] buffer = new byte[10];
         numberGenerator.nextBytes(buffer);
-        return Base32.encode(buffer);
+        return new String(base32.encode(buffer));
     }
 
     /**
@@ -51,13 +52,12 @@ public final class AuthenticatorCodeUtils {
      * @param timeIndex the time index
      * @param variance
      * @return
-     * @throws Base32.DecodingException
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
      */
     public static boolean verifyCode(String secret, int code, long timeIndex, int variance)
-            throws Base32.DecodingException, InvalidKeyException, NoSuchAlgorithmException {
-        byte[] secretBytes = Base32.decode(secret);
+            throws InvalidKeyException, NoSuchAlgorithmException {
+        byte[] secretBytes = base32.decode(secret);
         for (int i = -variance ; i <= variance ; i++) {
             if (getCode(secretBytes, timeIndex + i) == code) {
                 return true;
@@ -68,14 +68,14 @@ public final class AuthenticatorCodeUtils {
 
     // Gets the code for a secret at a given time index
     private static long getCode(String secret, long timeIndex)
-            throws NoSuchAlgorithmException, InvalidKeyException, Base32.DecodingException {
-        return getCode(Base32.decode(secret), timeIndex);
+            throws NoSuchAlgorithmException, InvalidKeyException {
+        return getCode(base32.decode(secret), timeIndex);
     }
 
     // Gets a list of valid codes at a time index with a given bound for time index
     private static List<Long> getCodeList(String secret, long timeIndex, int variance)
-            throws NoSuchAlgorithmException, InvalidKeyException, Base32.DecodingException {
-        byte[] secretBytes = Base32.decode(secret);
+            throws NoSuchAlgorithmException, InvalidKeyException {
+        byte[] secretBytes = base32.decode(secret);
         List<Long> list = new ArrayList<>();
         for (int i = -variance ; i <= variance ; i++) {
             list.add(getCode(secretBytes, timeIndex + i));
