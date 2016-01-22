@@ -1,5 +1,8 @@
 package org.originmc.googleauthenticator;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -58,6 +61,21 @@ public class GoogleAuthenticatorPlugin extends Plugin {
      */
     public HikariStatementController getDatabase() {
         return hikariController;
+    }
+
+    /**
+     * Sends information to the players Bukkit server (assuming the GoogleAuthenticator-Bukkit plugin is enabled)
+     * with instructions to give the map to the player.
+     *
+     * @param player the player
+     * @param url the url to the players QR code
+     */
+    public void sendQRCodeMapToPlayer(ProxiedPlayer player, String url) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("AuthMapGive");
+        out.writeUTF(player.getUniqueId().toString());
+        out.writeUTF(url);
+        player.getServer().sendData("BungeeCord", out.toByteArray());
     }
 
     /**
