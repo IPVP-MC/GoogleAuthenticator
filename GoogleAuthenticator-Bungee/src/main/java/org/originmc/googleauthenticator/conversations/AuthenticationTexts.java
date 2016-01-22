@@ -60,14 +60,29 @@ public final class AuthenticationTexts {
      */
     public static final BaseComponent[] NOW_AUTHENTICATED;
 
+    /**
+     * A message that tells the player that they have cancelled the authentication
+     */
     public static final BaseComponent[] CANCEL_SETUP;
 
+    /**
+     * A message that tells the player they still require authentication
+     */
     public static final BaseComponent[] NEED_TO_AUTHENTICATE;
 
+    /**
+     * A message that tells the player they have disabled authentication
+     */
     public static final BaseComponent[] DISABLED_AUTHENTICATION;
 
+    /**
+     * A message that tells the player we are now remembering their IP
+     */
     public static final BaseComponent[] NOW_REMEMBERING_IP;
 
+    /**
+     * A message that tells the player we are no longer remembering their IP
+     */
     public static final BaseComponent[] NO_LONGER_REMEMBERING_IP;
 
     // Ugly instantiation of basecomponents
