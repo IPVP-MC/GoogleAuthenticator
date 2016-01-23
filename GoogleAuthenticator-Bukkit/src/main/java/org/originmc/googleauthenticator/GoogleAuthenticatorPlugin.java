@@ -45,7 +45,7 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
                     ItemMeta meta = mapItem.getItemMeta();
                     meta.setDisplayName(ChatColor.RED + "Destroy when done");
                     mapItem.setItemMeta(meta);
-                    player.getInventory().addItem();
+                    player.getInventory().addItem(mapItem);
                 });
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to give map object", e);
