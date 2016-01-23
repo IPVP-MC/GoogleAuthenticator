@@ -30,7 +30,7 @@ public class AuthCommand extends Command {
             sender.sendMessage(new TextComponent("Only players can use this command"));
         } else {
             ProxiedPlayer player = (ProxiedPlayer) sender;
-            if (args.length == 0) {
+            if (args.length == 0 || args[0].trim().isEmpty()) {
                 // Create new authentication conversation
                 Conversation conversation = new Conversation(plugin, (ProxiedPlayer) sender, new AuthenticationBeginPrompt(plugin));
                 conversation.getContext().setSessionData("authdata", new AuthenticationData(AuthenticatorCodeUtils.generateNewSecret(),
