@@ -20,7 +20,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessageListener, Listener {
@@ -29,6 +31,9 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
      * The display name of all maps that are given out using {@link #giveMapToPlayer(Player, String)}
      */
     public static final String QR_CODE_MAP_NAME = ChatColor.GOLD + "Google Authenticator Map";
+
+    // A set that contains all players that currently have a map
+    private Set<UUID> playersWithMaps = ConcurrentHashMap.newKeySet();
 
     @Override
     public void onEnable() {
@@ -39,7 +44,9 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        removeMapsFromPlayer(player);
+        if (hasQRCodeMap(player)) {
+            removeMapsFromPlayer(player);
+        }
     }
 
     /**
@@ -68,6 +75,7 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
                         meta.setDisplayName(QR_CODE_MAP_NAME);
                         mapItem.setItemMeta(meta);
                         player.getInventory().addItem(mapItem);
+                        playersWithMaps.add(player.getUniqueId());
                     }
                 });
             } catch (IOException e) {
@@ -88,6 +96,17 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
                 player.getInventory().setItem(i, null);
             }
         }
+        playersWithMaps.remove(player.getUniqueId());
+    }
+
+    /**
+     * Returns whether or not a player currently has a QR map in their inventory
+     *
+     * @param player the player
+     * @return true if the player has a code map in their inventory
+     */
+    public boolean hasQRCodeMap(Player player) {
+        return playersWithMaps.contains(player.getUniqueId());
     }
 
     /**
