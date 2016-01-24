@@ -53,6 +53,21 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
         });
     }
 
+    public void removeMapsFromPlayer(Player player) {
+        for (int i = 0 ; i < player.getInventory().getSize() ; i++) {
+            ItemStack item = player.getInventory().getItem(i);
+            if (isQRCodeMap(item)) {
+                player.getInventory().setItem(i, null);
+            }
+        }
+    }
+
+    public boolean isQRCodeMap(ItemStack item) {
+        return item != null && item.getType() == Material.MAP
+                && item.hasItemMeta() && item.getItemMeta().hasDisplayName()
+                && item.getItemMeta().getDisplayName().equals(ChatColor.RED + "Destroy when done");
+    }
+
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (!channel.equals("BungeeCord")) {
@@ -67,6 +82,10 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
             String url = in.readUTF();
             Player target = Bukkit.getPlayer(uuid);
             giveMapToPlayer(target, url);
+        } else if (subchannel.equals("AuthMapRemove")) {
+            UUID uuid = UUID.fromString(in.readUTF());
+            Player target = Bukkit.getPlayer(uuid);
+            removeMapsFromPlayer(target);
         }
     }
 }

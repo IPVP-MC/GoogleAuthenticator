@@ -79,6 +79,19 @@ public class GoogleAuthenticatorPlugin extends Plugin {
     }
 
     /**
+     * Sends information to the players Bukkit server with instructions for the GoogleAuthenticator-Bukkit plugin
+     * to remove any QR code maps from the player.
+     *
+     * @param player the player
+     */
+    public void removeQRCodeMapsFromPlayer(ProxiedPlayer player) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("AuthMapRemove");
+        out.writeUTF(player.getUniqueId().toString());
+        player.getServer().sendData("BungeeCord", out.toByteArray());
+    }
+
+    /**
      * Adds authentication data for a {@link net.md_5.bungee.api.connection.ProxiedPlayer}
      *
      * @param uuid the {@link UUID} of the player

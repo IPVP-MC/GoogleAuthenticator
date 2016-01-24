@@ -22,6 +22,7 @@ public class AuthenticationEnterCodePrompt implements Prompt {
     public Prompt acceptInput(ConversationContext context, String input) {
         AuthenticationData data = (AuthenticationData) context.getSessionData("authdata");
         plugin.addAuthenticationData(context.getForWhom().getUniqueId(), data);
+        plugin.removeQRCodeMapsFromPlayer(context.getForWhom());
         data.setAuthenticated(true);
         data.setIp(context.getForWhom().getAddress().getAddress().getHostName());
         context.getForWhom().sendMessage(AuthenticationTexts.AUTHENTICATED_TEXT);

@@ -38,6 +38,7 @@ public class AuthCommand extends Command {
                 conversation.addConversationCanceller((context, input) -> {
                     if (input.equalsIgnoreCase("exit")) {
                         player.sendMessage(AuthenticationTexts.CANCEL_SETUP);
+                        plugin.removeQRCodeMapsFromPlayer(player);
                         return true;
                     }
                     return false;
