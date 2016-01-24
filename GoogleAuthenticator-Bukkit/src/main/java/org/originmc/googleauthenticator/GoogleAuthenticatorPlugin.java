@@ -7,6 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -20,7 +23,7 @@ import java.net.URL;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessageListener {
+public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessageListener, Listener {
 
     /**
      * The display name of all maps that are given out using {@link #giveMapToPlayer(Player, String)}
@@ -30,6 +33,13 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
     @Override
     public void onEnable() {
         getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+        getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        removeMapsFromPlayer(player);
     }
 
     /**
