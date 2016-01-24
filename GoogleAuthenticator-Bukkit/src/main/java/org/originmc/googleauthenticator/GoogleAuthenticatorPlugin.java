@@ -8,7 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,6 +48,14 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
         Player player = event.getPlayer();
         if (hasQRCodeMap(player)) {
             removeMapsFromPlayer(player);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    public void onPlayerDropQRCodeMap(PlayerDropItemEvent event) {
+        if (isQRCodeMap(event.getItemDrop().getItemStack())) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to drop your Google Authenticator Map.");
         }
     }
 
