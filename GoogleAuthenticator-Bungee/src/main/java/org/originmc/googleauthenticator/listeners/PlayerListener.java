@@ -13,7 +13,9 @@ import org.originmc.googleauthenticator.conversations.AuthenticationLoginEnterCo
 import org.originmc.googleauthenticator.conversations.AuthenticationTexts;
 import org.originmc.googleauthenticator.conversations.Conversation;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles player authentication functions
@@ -21,15 +23,27 @@ import java.util.UUID;
 public class PlayerListener implements Listener {
 
     private GoogleAuthenticatorPlugin plugin;
+    private Set<UUID> waitingForDatabaseData = ConcurrentHashMap.newKeySet(); // Stores players who are waiting for plugin.getDatabase().getAuthenticationData
 
     public PlayerListener(GoogleAuthenticatorPlugin plugin) {
         this.plugin = plugin;
+    }
+
+    /**
+     * Returns whether or not a player is waiting for their authentication data to be pulled from the database
+     *
+     * @param player the player
+     * @return true if the authentication data is being pulled
+     */
+    public boolean isWaitingForDatabaseData(ProxiedPlayer player) {
+        return waitingForDatabaseData.contains(player.getUniqueId());
     }
 
     @EventHandler
     public void onPlayerConnect(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+        waitingForDatabaseData.add(uuid);
 
         plugin.getProxy().getScheduler().runAsync(plugin, () -> {
             AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
@@ -48,6 +62,8 @@ public class PlayerListener implements Listener {
                     conversation.begin();
                 }
             }
+
+            waitingForDatabaseData.remove(uuid);
         });
     }
 
@@ -60,6 +76,9 @@ public class PlayerListener implements Listener {
             if (data != null && !data.isAuthenticated()) {
                 event.setCancelled(true);
                 player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
+            } else if (isWaitingForDatabaseData(player)) {
+                event.setCancelled(true);
+                player.sendMessage(AuthenticationTexts.WAITING_FOR_DATA);
             }
         }
     }
@@ -68,6 +87,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
         ProxiedPlayer player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+        waitingForDatabaseData.remove(uuid);
         plugin.getProxy().getScheduler().runAsync(plugin, () -> plugin.clearAndUpdateAuthenticationData(uuid)); // Remove and clear the players auth data
     }
 
@@ -79,6 +99,9 @@ public class PlayerListener implements Listener {
         if (data != null && !data.isAuthenticated()) {
             event.setCancelled(true);
             player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
+        } else if (isWaitingForDatabaseData(player)) {
+            event.setCancelled(true);
+            player.sendMessage(AuthenticationTexts.WAITING_FOR_DATA);
         }
     }
 }

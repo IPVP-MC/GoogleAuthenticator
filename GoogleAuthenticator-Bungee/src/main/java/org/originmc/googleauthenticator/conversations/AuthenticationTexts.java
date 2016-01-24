@@ -71,6 +71,11 @@ public final class AuthenticationTexts {
     public static final BaseComponent[] NEED_TO_AUTHENTICATE;
 
     /**
+     * A message that tells the player that the plugin is currently waiting to check if they have AuthenticationData
+     */
+    public static final BaseComponent[] WAITING_FOR_DATA;
+
+    /**
      * A message that tells the player they have disabled authentication
      */
     public static final BaseComponent[] DISABLED_AUTHENTICATION;
@@ -197,6 +202,11 @@ public final class AuthenticationTexts {
         TextComponent needToAuth = new TextComponent("You need to authenticate yourself first!");
         needToAuth.setColor(ChatColor.RED);
         NEED_TO_AUTHENTICATE = new BaseComponent[]{ needToAuth };
+
+        // Create WAITING_FOR_DATA
+        TextComponent waitingForData = new TextComponent("Please wait while your /auth data is checked...");
+        waitingForData.setColor(ChatColor.RED);
+        WAITING_FOR_DATA = new BaseComponent[]{ waitingForData };
 
         // Create DISABLED_AUTHENTICATION
         TextComponent disabledAuth = new TextComponent("Disabled two-factor authentication! You can still enable it " +
