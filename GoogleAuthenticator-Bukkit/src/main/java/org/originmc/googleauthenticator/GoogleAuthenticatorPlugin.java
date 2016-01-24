@@ -22,6 +22,11 @@ import java.util.logging.Level;
 
 public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessageListener {
 
+    /**
+     * The display name of all maps that are given out using {@link #giveMapToPlayer(Player, String)}
+     */
+    public static final String QR_CODE_MAP_NAME = ChatColor.RED + "Destroy when done";
+
     @Override
     public void onEnable() {
         getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
@@ -49,7 +54,7 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
                 getServer().getScheduler().runTask(this, () -> {
                     ItemStack mapItem = new ItemStack(Material.MAP, 1, id);
                     ItemMeta meta = mapItem.getItemMeta();
-                    meta.setDisplayName(ChatColor.RED + "Destroy when done");
+                    meta.setDisplayName(QR_CODE_MAP_NAME);
                     mapItem.setItemMeta(meta);
                     player.getInventory().addItem(mapItem);
                 });
@@ -82,7 +87,7 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
     public boolean isQRCodeMap(ItemStack item) {
         return item != null && item.getType() == Material.MAP
                 && item.hasItemMeta() && item.getItemMeta().hasDisplayName()
-                && item.getItemMeta().getDisplayName().equals(ChatColor.RED + "Destroy when done");
+                && item.getItemMeta().getDisplayName().equals(QR_CODE_MAP_NAME);
     }
 
     @Override
