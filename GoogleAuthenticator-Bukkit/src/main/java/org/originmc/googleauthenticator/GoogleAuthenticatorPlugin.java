@@ -25,7 +25,7 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
     /**
      * The display name of all maps that are given out using {@link #giveMapToPlayer(Player, String)}
      */
-    public static final String QR_CODE_MAP_NAME = ChatColor.RED + "Destroy when done";
+    public static final String QR_CODE_MAP_NAME = ChatColor.GOLD + "Google Authenticator Map";
 
     @Override
     public void onEnable() {
