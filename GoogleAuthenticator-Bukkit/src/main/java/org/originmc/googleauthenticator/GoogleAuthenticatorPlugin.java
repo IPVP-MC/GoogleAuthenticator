@@ -3,10 +3,12 @@ package org.originmc.googleauthenticator;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -38,7 +40,13 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
                 map.getRenderers().forEach(map::removeRenderer); // Remove any default renderers
                 map.addRenderer(renderer); // Add our renderer
                 short id = map.getId();
-                getServer().getScheduler().runTask(this, () -> player.getInventory().addItem(new ItemStack(Material.MAP, 1, id)));
+                getServer().getScheduler().runTask(this, () -> {
+                    ItemStack mapItem = new ItemStack(Material.MAP, 1, id);
+                    ItemMeta meta = mapItem.getItemMeta();
+                    meta.setDisplayName(ChatColor.RED + "Destroy when done");
+                    mapItem.setItemMeta(meta);
+                    player.getInventory().addItem(mapItem);
+                });
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to give map object", e);
             }
