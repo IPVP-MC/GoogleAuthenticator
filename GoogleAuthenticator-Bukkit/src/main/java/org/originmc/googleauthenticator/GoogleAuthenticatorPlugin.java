@@ -27,6 +27,12 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
         getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
     }
 
+    /**
+     * Gives a QR code map to a player
+     *
+     * @param player the player to give the map to
+     * @param url the URL where the map will point
+     */
     public void giveMapToPlayer(Player player, String url) {
         World world = Bukkit.getWorlds().get(0);
 
@@ -53,6 +59,11 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
         });
     }
 
+    /**
+     * Removes all QR Code maps from a players inventory
+     *
+     * @param player the player
+     */
     public void removeMapsFromPlayer(Player player) {
         for (int i = 0 ; i < player.getInventory().getSize() ; i++) {
             ItemStack item = player.getInventory().getItem(i);
@@ -62,6 +73,12 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
         }
     }
 
+    /**
+     * Returns whether an {@link ItemStack} is a QR Code map
+     *
+     * @param item the item to check
+     * @return true if the item is a QR Code map
+     */
     public boolean isQRCodeMap(ItemStack item) {
         return item != null && item.getType() == Material.MAP
                 && item.hasItemMeta() && item.getItemMeta().hasDisplayName()
