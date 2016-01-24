@@ -41,6 +41,7 @@ public class PlayerListener implements Listener {
 
                 if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
                     playerData.setAuthenticated(true);
+                    player.sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
                 } else {
                     player.sendMessage(AuthenticationTexts.LOGIN_REQUIRES_AUTH);
                     Conversation conversation = new Conversation(plugin, player, new AuthenticationLoginEnterCodePrompt(plugin));
