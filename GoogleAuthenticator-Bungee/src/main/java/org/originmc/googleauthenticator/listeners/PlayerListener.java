@@ -67,7 +67,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
         ProxiedPlayer player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        plugin.clearAndUpdateAuthenticationData(uuid); // Remove and clear the players auth data
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> plugin.clearAndUpdateAuthenticationData(uuid)); // Remove and clear the players auth data
     }
 
     @EventHandler
