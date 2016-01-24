@@ -2,7 +2,9 @@ package org.originmc.googleauthenticator;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -24,11 +26,12 @@ public class GoogleAuthenticatorPlugin extends Plugin {
     private Configuration config;
     private HikariStatementController hikariController;
     private Map<UUID, AuthenticationData> playerAuthenticationData = new ConcurrentHashMap<>();
+    private PlayerListener playerListener;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        getProxy().getPluginManager().registerListener(this, new PlayerListener(this));
+        getProxy().getPluginManager().registerListener(this, playerListener = new PlayerListener(this));
         getProxy().getPluginManager().registerListener(this, new ConversationListener());
         getProxy().getPluginManager().registerCommand(this, new AuthCommand(this));
         try { // Try to initialize HikariCP
@@ -36,6 +39,12 @@ public class GoogleAuthenticatorPlugin extends Plugin {
         } catch (SQLException e) {
             getLogger().log(Level.SEVERE, "failed to initialize hikari controller", e);
         }
+
+        // Incase of reload, load all online proxy players
+        getProxy().getPlayers().forEach(player -> {
+            player.sendMessage(ChatColor.GREEN + "GoogleAuthenticator has been reloaded, you may need to re-authenticate yourself.");
+            playerListener.onPlayerConnect(new PostLoginEvent(player));
+        });
     }
 
     @Override
@@ -68,7 +77,7 @@ public class GoogleAuthenticatorPlugin extends Plugin {
      * with instructions to give the map to the player.
      *
      * @param player the player
-     * @param url the url to the players QR code
+     * @param url    the url to the players QR code
      */
     public void sendQRCodeMapToPlayer(ProxiedPlayer player, String url) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
