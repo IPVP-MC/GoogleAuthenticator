@@ -62,11 +62,13 @@ public class GoogleAuthenticatorPlugin extends JavaPlugin implements PluginMessa
                 map.addRenderer(renderer); // Add our renderer
                 short id = map.getId();
                 getServer().getScheduler().runTask(this, () -> {
-                    ItemStack mapItem = new ItemStack(Material.MAP, 1, id);
-                    ItemMeta meta = mapItem.getItemMeta();
-                    meta.setDisplayName(QR_CODE_MAP_NAME);
-                    mapItem.setItemMeta(meta);
-                    player.getInventory().addItem(mapItem);
+                    if (player.isOnline()) {
+                        ItemStack mapItem = new ItemStack(Material.MAP, 1, id);
+                        ItemMeta meta = mapItem.getItemMeta();
+                        meta.setDisplayName(QR_CODE_MAP_NAME);
+                        mapItem.setItemMeta(meta);
+                        player.getInventory().addItem(mapItem);
+                    }
                 });
             } catch (IOException e) {
                 getLogger().log(Level.SEVERE, "Failed to give map object", e);
