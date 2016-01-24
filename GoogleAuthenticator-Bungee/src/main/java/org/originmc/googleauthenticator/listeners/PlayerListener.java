@@ -99,7 +99,7 @@ public class PlayerListener implements Listener {
         if (data != null && !data.isAuthenticated()) {
             event.setCancelled(true);
             player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
-        } else if (isWaitingForDatabaseData(player)) {
+        } else if (isWaitingForDatabaseData(player) && player.getServer() != null) {
             event.setCancelled(true);
             player.sendMessage(AuthenticationTexts.WAITING_FOR_DATA);
         }
