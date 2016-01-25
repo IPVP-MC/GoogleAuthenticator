@@ -16,6 +16,7 @@ import org.originmc.googleauthenticator.conversations.Conversation;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 /**
  * Handles player authentication functions
@@ -46,21 +47,25 @@ public class PlayerListener implements Listener {
         waitingForDatabaseData.add(uuid);
 
         plugin.getProxy().getScheduler().runAsync(plugin, () -> {
-            AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
-            String ip = player.getAddress().getAddress().getHostName();
+            try {
+                AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
+                String ip = player.getAddress().getAddress().getHostName();
 
-            // Proceed if the player has set up 2 factor auth
-            if (playerData != null) {
-                plugin.addAuthenticationData(uuid, playerData);
+                // Proceed if the player has set up 2 factor auth
+                if (playerData != null) {
+                    plugin.addAuthenticationData(uuid, playerData);
 
-                if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
-                    playerData.setAuthenticated(true);
-                    player.sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
-                } else {
-                    player.sendMessage(AuthenticationTexts.LOGIN_REQUIRES_AUTH);
-                    Conversation conversation = new Conversation(plugin, player, new AuthenticationLoginEnterCodePrompt(plugin));
-                    conversation.begin();
+                    if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
+                        playerData.setAuthenticated(true);
+                        player.sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
+                    } else {
+                        player.sendMessage(AuthenticationTexts.LOGIN_REQUIRES_AUTH);
+                        Conversation conversation = new Conversation(plugin, player, new AuthenticationLoginEnterCodePrompt(plugin));
+                        conversation.begin();
+                    }
                 }
+            } catch (Exception e) {
+                plugin.getProxy().getLogger().log(Level.SEVERE, "Failed to get authentication data for " + player.getName(), e);
             }
 
             waitingForDatabaseData.remove(uuid);
