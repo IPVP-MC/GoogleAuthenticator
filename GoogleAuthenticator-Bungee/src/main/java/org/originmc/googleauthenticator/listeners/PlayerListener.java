@@ -1,22 +1,17 @@
 package org.originmc.googleauthenticator.listeners;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.ChatEvent;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.ServerConnectEvent;
+import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import org.originmc.googleauthenticator.AuthenticationData;
 import org.originmc.googleauthenticator.GoogleAuthenticatorPlugin;
 import org.originmc.googleauthenticator.conversations.AuthenticationLoginEnterCodePrompt;
 import org.originmc.googleauthenticator.conversations.AuthenticationTexts;
 import org.originmc.googleauthenticator.conversations.Conversation;
 
-import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 /**
  * Handles player authentication functions
@@ -24,52 +19,47 @@ import java.util.logging.Level;
 public class PlayerListener implements Listener {
 
     private GoogleAuthenticatorPlugin plugin;
-    private Set<UUID> waitingForDatabaseData = ConcurrentHashMap.newKeySet(); // Stores players who are waiting for plugin.getDatabase().getAuthenticationData
 
     public PlayerListener(GoogleAuthenticatorPlugin plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * Returns whether or not a player is waiting for their authentication data to be pulled from the database
-     *
-     * @param player the player
-     * @return true if the authentication data is being pulled
-     */
-    public boolean isWaitingForDatabaseData(ProxiedPlayer player) {
-        return waitingForDatabaseData.contains(player.getUniqueId());
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerConnect(LoginEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        event.registerIntent(plugin);
+        UUID uuid = event.getConnection().getUniqueId();
+        AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
+        String ip = event.getConnection().getAddress().getAddress().getHostName();
+
+        // Proceed if the player has set up 2 factor auth
+        if (playerData != null) {
+            if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
+                playerData.setAuthenticated(true);
+            }
+            plugin.addAuthenticationData(uuid, playerData);
+        }
+        event.completeIntent(plugin);
     }
 
     @EventHandler
     public void onPlayerConnect(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        waitingForDatabaseData.add(uuid);
+        AuthenticationData data = plugin.getAuthenticationData(uuid);
 
-        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
-            try {
-                AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
-                String ip = player.getAddress().getAddress().getHostName();
-
-                // Proceed if the player has set up 2 factor auth
-                if (playerData != null) {
-                    plugin.addAuthenticationData(uuid, playerData);
-
-                    if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
-                        playerData.setAuthenticated(true);
-                        player.sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
-                    } else {
-                        player.sendMessage(AuthenticationTexts.LOGIN_REQUIRES_AUTH);
-                        Conversation conversation = new Conversation(plugin, player, new AuthenticationLoginEnterCodePrompt(plugin));
-                        conversation.begin();
-                    }
-                }
-            } catch (Exception e) {
-                plugin.getProxy().getLogger().log(Level.SEVERE, "Failed to get authentication data for " + player.getName(), e);
+        if (data != null) {
+            if (data.isAuthenticated()) {
+                player.sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
+            } else {
+                player.sendMessage(AuthenticationTexts.LOGIN_REQUIRES_AUTH);
+                Conversation conversation = new Conversation(plugin, player, new AuthenticationLoginEnterCodePrompt(plugin));
+                conversation.begin();
             }
-
-            waitingForDatabaseData.remove(uuid);
-        });
+        }
     }
 
     @EventHandler
@@ -81,9 +71,6 @@ public class PlayerListener implements Listener {
             if (data != null && !data.isAuthenticated()) {
                 event.setCancelled(true);
                 player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
-            } else if (isWaitingForDatabaseData(player)) {
-                event.setCancelled(true);
-                player.sendMessage(AuthenticationTexts.WAITING_FOR_DATA);
             }
         }
     }
@@ -92,7 +79,6 @@ public class PlayerListener implements Listener {
     public void onPlayerDisconnect(PlayerDisconnectEvent event) {
         ProxiedPlayer player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        waitingForDatabaseData.remove(uuid);
         plugin.getProxy().getScheduler().runAsync(plugin, () -> plugin.clearAndUpdateAuthenticationData(uuid)); // Remove and clear the players auth data
     }
 
@@ -102,11 +88,10 @@ public class PlayerListener implements Listener {
         AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
 
         if (data != null && !data.isAuthenticated()) {
-            event.setCancelled(true);
+            if (!event.getTarget().getName().equals("hub1") && !event.getTarget().getName().equals("hub2")) {
+                event.setCancelled(true);
+            }
             player.sendMessage(AuthenticationTexts.NEED_TO_AUTHENTICATE);
-        } else if (isWaitingForDatabaseData(player) && player.getServer() != null) {
-            event.setCancelled(true);
-            player.sendMessage(AuthenticationTexts.WAITING_FOR_DATA);
         }
     }
 }
