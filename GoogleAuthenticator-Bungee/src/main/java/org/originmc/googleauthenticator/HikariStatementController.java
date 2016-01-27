@@ -34,12 +34,10 @@ public class HikariStatementController {
 
         // Configure Hikari data pool
         HikariConfig hikariConfig = new HikariConfig(props);
-        hikariConfig.setLeakDetectionThreshold(10000L);
-        hikariConfig.setMaxLifetime(25000L);
-        hikariConfig.setIdleTimeout(20000L);
+        hikariConfig.setMaxLifetime(5000L);
+        hikariConfig.setIdleTimeout(5000L);
         hikariConfig.setMaximumPoolSize(10);
-        hikariConfig.setConnectionTimeout(10000L);
-        hikariConfig.setInitializationFailFast(false);
+        hikariConfig.setConnectionTimeout(5000L);
         hikariConfig.setThreadFactory(new ThreadFactoryBuilder().setDaemon(true)
                 .setNameFormat("hikari-sql-pool-%d").build());
         this.hikariDataSource = new HikariDataSource(hikariConfig);

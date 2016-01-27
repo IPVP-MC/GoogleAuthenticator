@@ -12,6 +12,7 @@ import org.originmc.googleauthenticator.conversations.AuthenticationTexts;
 import org.originmc.googleauthenticator.conversations.Conversation;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Handles player authentication functions
@@ -31,16 +32,21 @@ public class PlayerListener implements Listener {
         }
 
         event.registerIntent(plugin);
-        UUID uuid = event.getConnection().getUniqueId();
-        AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
-        String ip = event.getConnection().getAddress().getAddress().getHostName();
+        try {
+            long time = System.currentTimeMillis();
+            UUID uuid = event.getConnection().getUniqueId();
+            AuthenticationData playerData = plugin.getDatabase().getAuthenticationData(uuid);
+            String ip = event.getConnection().getAddress().getAddress().getHostName();
 
-        // Proceed if the player has set up 2 factor auth
-        if (playerData != null) {
-            if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
-                playerData.setAuthenticated(true);
+            // Proceed if the player has set up 2 factor auth
+            if (playerData != null) {
+                if (playerData.isTrustingIp() && ip.equals(playerData.getIp())) {
+                    playerData.setAuthenticated(true);
+                }
+                plugin.addAuthenticationData(uuid, playerData);
             }
-            plugin.addAuthenticationData(uuid, playerData);
+        } catch (Exception ex) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to get authentication data", ex);
         }
         event.completeIntent(plugin);
     }
@@ -62,7 +68,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCommand(ChatEvent event) {
         if (event.getSender() instanceof ProxiedPlayer && !event.isCancelled()) {
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
