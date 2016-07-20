@@ -1,0 +1,5 @@
+name: 2FA
+main: org.ipvp.auth.AuthPlugin
+version: ${project.version}
+description: ${project.description}
+author: SainttX

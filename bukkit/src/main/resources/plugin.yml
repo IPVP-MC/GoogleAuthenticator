@@ -1,0 +1,11 @@
+name: 2FA
+main: org.ipvp.auth.AuthPlugin
+version: ${project.version}
+description: ${project.description}
+authors: [ SainttX ]
+
+commands: 
+  auth:
+    description: Authenticate yourself with 2FA
+    aliases: [ authentication, authenticator, googleauth, gauth, googleauthenticator, 2fa, tfa ]
+    

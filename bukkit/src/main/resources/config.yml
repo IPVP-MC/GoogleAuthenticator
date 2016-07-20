@@ -1,0 +1,12 @@
+bungee: true
+
+database:
+  url: jdbc:mysql://127.0.0.1:3306/auth
+  username: root
+  password: eG4?d7Q.%~]X=)5%
+  pool:
+    connection-timeout: 5000
+    idle-timeout: 180000
+    max-lifetime: 300000
+    minimum-idle: 3
+    maximum-pool-size: 5
