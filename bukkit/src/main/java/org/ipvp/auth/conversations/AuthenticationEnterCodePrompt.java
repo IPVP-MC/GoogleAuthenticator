@@ -27,7 +27,7 @@ public class AuthenticationEnterCodePrompt extends NumericPrompt {
     public Prompt acceptValidatedInput(ConversationContext context, Number input) {
         AuthenticationData data = (AuthenticationData) context.getSessionData("authdata");
         try {
-            if (!AuthenticatorCodeUtils.verifyCode(data.getSecret(), input.intValue(), AuthenticatorCodeUtils.getTimeIndex(), 10)) {
+            if (!AuthenticatorCodeUtils.verifyCode(data.getSecret(), input.intValue(), AuthenticatorCodeUtils.getTimeIndex(), 20)) {
                 return this;
             }
         } catch (Exception e) {

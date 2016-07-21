@@ -24,7 +24,7 @@ public class AuthenticationLoginEnterCodePrompt extends AuthenticationEnterCodeP
         Player player = (Player) context.getForWhom();
         AuthenticationData data = plugin.getAuthenticationData(player.getUniqueId());
         try {
-            if (!AuthenticatorCodeUtils.verifyCode(data.getSecret(), input.intValue(), AuthenticatorCodeUtils.getTimeIndex(), 10)) {
+            if (!AuthenticatorCodeUtils.verifyCode(data.getSecret(), input.intValue(), AuthenticatorCodeUtils.getTimeIndex(), 20)) {
                 return this;
             }
         } catch (Exception e) {
