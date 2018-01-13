@@ -58,8 +58,13 @@ public class PlayerListener implements Listener {
 
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             if (data == null) {
-                plugin.sendBungeeAuthentication(player);
-                player.sendMessage(ChatColor.RED + "Secure your account with 2-factor authentication using /auth.");
+                if (player.hasPermission("2fa.require")) {
+                    player.sendMessage(ChatColor.RED + "You are required to set up 2-factor authentication by the " +
+                            "network. Please begin the process by using the /auth command.");
+                } else {
+                    plugin.sendBungeeAuthentication(player);
+                    player.sendMessage(ChatColor.RED + "Secure your account with 2-factor authentication using /auth.");
+                }
             } else if (data.isAuthenticated()) {
                 player.spigot().sendMessage(AuthenticationTexts.NOW_AUTHENTICATED);
                 plugin.sendBungeeAuthentication(player);
