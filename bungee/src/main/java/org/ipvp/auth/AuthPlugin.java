@@ -61,11 +61,12 @@ public class AuthPlugin extends Plugin implements Listener {
 
         ByteArrayDataInput input = ByteStreams.newDataInput(event.getData());
         String sub = input.readUTF();
-        if (!sub.equals("Authenticated")) {
-            return;
+        if (sub.equals("Unauthenticate")) {
+            UUID uuid = UUID.fromString(input.readUTF());
+            authenticationStatus.put(uuid, false);
+        } else if (sub.equals("Authenticated")) {
+            UUID uuid = UUID.fromString(input.readUTF());
+            authenticationStatus.put(uuid, true);
         }
-        
-        UUID uuid = UUID.fromString(input.readUTF());
-        authenticationStatus.put(uuid, true);
     }
 }

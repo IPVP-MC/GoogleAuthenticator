@@ -42,6 +42,11 @@ public class AuthCommand implements CommandExecutor {
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                         plugin.removeAuthenticationData(player.getUniqueId());
                         player.spigot().sendMessage(AuthenticationTexts.DISABLED_AUTHENTICATION);
+                        if (player.hasPermission("2fa.require")) {
+                            plugin.removeBungeeAuthentication(player);
+                            player.sendMessage(ChatColor.RED + "You are required to set up 2-factor authentication by the " +
+                                    "network. Please begin the process by using the /auth command.");
+                        }
                     });
                 }
             } else if (args[0].equalsIgnoreCase("ipenable")) {

@@ -227,4 +227,11 @@ public class AuthPlugin extends JavaPlugin implements PluginMessageListener {
         out.writeUTF(player.getUniqueId().toString());
         player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
     }
+
+    public void removeBungeeAuthentication(Player player) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Unauthenticate");
+        out.writeUTF(player.getUniqueId().toString());
+        player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
+    }
 }
